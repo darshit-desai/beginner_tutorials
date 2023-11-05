@@ -16,7 +16,7 @@ git clone https://github.com/darshit-desai/beginner_tutorials.git
 # Install rosdep dependencies before building the package
 rosdep install -i --from-path src --rosdistro humble -y
 # Build the package using colcon build
-colcon build --packages-select beginner_tutorials
+colcon build --packages-select cpp_pubsub
 # After successfull build source the package
 . install/setup.bash
 # Run the publisher in terminal#1
