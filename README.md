@@ -8,9 +8,9 @@ Using ROS2 Humble and Object Oriented approach for C++ simple publisher and subs
 # Source to ROS2 HUMBLE
 source /opt/ros/humble/setup.bash
 # Make your ros2 workspace
-mkdir ros2_ws/src
+mkdir ros2_ws
 # Go to the source directory of your ros2 workspace
-cd ~/ros2_ws/src
+cd ~/ros2_ws
 git clone https://github.com/darshit-desai/beginner_tutorials.git
 
 # Go back to root of workspace
