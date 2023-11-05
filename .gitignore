@@ -1,5 +1,6 @@
 build/
 install/
+log/
 # VS Code files
 .VC.db
 
