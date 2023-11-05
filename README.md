@@ -13,8 +13,6 @@ mkdir ros2_ws
 cd ~/ros2_ws
 git clone https://github.com/darshit-desai/beginner_tutorials.git
 
-# Go back to root of workspace
-cd ..
 # Install rosdep dependencies before building the package
 rosdep install -i --from-path src --rosdistro humble -y
 # Build the package using colcon build
