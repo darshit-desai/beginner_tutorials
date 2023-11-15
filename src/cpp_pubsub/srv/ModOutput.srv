@@ -1,0 +1,5 @@
+# cpp_pubsub/srv/ChangeOutput.srv
+
+string new_output   # Request: the new output string
+---
+bool success        # Response: indicates if the change was successful

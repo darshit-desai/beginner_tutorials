@@ -1,0 +1,21 @@
+launch:
+
+- arg:
+    name: "freq"
+    default: "2.0"
+# - node:
+#     pkg: "cpp_pubsub"
+#     exec: "change_output_server"
+
+- node:
+    pkg: "cpp_pubsub"
+    exec: "talker"
+    param:
+    -
+     name: "freq"
+     value: "$(var freq)"
+
+- node:
+    pkg: "cpp_pubsub"
+    exec: "listener"
+      
