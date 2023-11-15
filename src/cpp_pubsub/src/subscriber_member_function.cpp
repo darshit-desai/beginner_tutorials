@@ -6,8 +6,9 @@
  * @version 0.1
  * @date 2023-11-14
  *
- * @copyright Copyright (c) 2023
- *
+ * @copyright Copyright (c) 2023 Darshit Desai
+ * This code is licensed under the Apache 2.0 License. Please see the
+ * accompanying LICENSE file for the full text of the license.
  */
 #include <functional>
 #include <memory>
