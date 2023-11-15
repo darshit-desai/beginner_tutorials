@@ -17,6 +17,9 @@
 #include <cstdlib>
 #include <functional>
 #include <memory>
+#include <rclcpp/executors.hpp>
+#include <rclcpp/logger.hpp>
+#include <rclcpp/logging.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/string.hpp>
 #include <string>
@@ -36,18 +39,21 @@ class MinimalPublisher : public rclcpp::Node {
     // if frequency less then zero give error
     if (publish_frequency < 0) {
       RCLCPP_FATAL_STREAM_ONCE(this->get_logger(),
-                   "Frequency parameter must be greater than zero");
+                               "Frequency parameter must be greater than zero");
       exit(1);
     } else if (publish_frequency > 100) {
       // else if frequency >100 then give warning
       RCLCPP_ERROR_STREAM(this->get_logger(),
-                   "Frequency parameter is greater than 100 Hz");
+                          "Frequency parameter is greater than 100 Hz");
     } else {
-        // else start the publisher with a delay of 1/frequency and
-        // print the debug stream
-      RCLCPP_DEBUG_STREAM(this->get_logger(), "Frequency parameter is " << publish_frequency <<" Hz");
-                   
-      RCLCPP_INFO_STREAM(this->get_logger(), "Publishing at " << publish_frequency <<" Hz");
+      // else start the publisher with a delay of 1/frequency and
+      // print the debug stream
+      RCLCPP_DEBUG_STREAM(this->get_logger(), "Frequency parameter is "
+                                                  << publish_frequency
+                                                  << " Hz");
+
+      RCLCPP_INFO_STREAM(this->get_logger(),
+                         "Publishing at " << publish_frequency << " Hz");
     }
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
     timer_ = this->create_wall_timer(
@@ -83,8 +89,8 @@ class MinimalPublisher : public rclcpp::Node {
   void change_output_service_request(
       const std::shared_ptr<cpp_pubsub::srv::ModOutput::Request> request,
       std::shared_ptr<cpp_pubsub::srv::ModOutput::Response> response) {
-    RCLCPP_WARN_STREAM(rclcpp::get_logger("rclcpp"), "received request with data " <<
-                request->new_output);
+    RCLCPP_WARN_STREAM(rclcpp::get_logger("rclcpp"),
+                       "received request with data " << request->new_output);
     setData(request->new_output);
     response->set__success(true);
     RCLCPP_INFO_STREAM_ONCE(rclcpp::get_logger("rclcpp"),
