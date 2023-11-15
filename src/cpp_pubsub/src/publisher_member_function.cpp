@@ -36,15 +36,13 @@ class MinimalPublisher : public rclcpp::Node {
       RCLCPP_FATAL(this->get_logger(),
                    "Frequency parameter must be greater than zero");
       exit(1);
-    }
-    // else if frequency >100 then give warning
-    else if (publish_frequency > 100) {
+    } else if (publish_frequency > 100) {
+      // else if frequency >100 then give warning
       RCLCPP_ERROR(this->get_logger(),
                    "Frequency parameter is greater than 100 Hz");
-    }
-    // else start the publisher with a delay of 1/frequency and print the debug
-    // stream
-    else {
+    } else {
+        // else start the publisher with a delay of 1/frequency and
+        // print the debug stream
       RCLCPP_DEBUG(this->get_logger(), "Frequency parameter is %f Hz",
                    publish_frequency);
       RCLCPP_INFO(this->get_logger(), "Publishing at %f Hz", publish_frequency);
