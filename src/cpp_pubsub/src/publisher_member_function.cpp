@@ -48,9 +48,9 @@ class MinimalPublisher : public rclcpp::Node {
     } else {
       // else start the publisher with a delay of 1/frequency and
       // print the debug stream
-      RCLCPP_DEBUG_STREAM(rclcpp::get_logger("minimal_publisher"), "Frequency parameter is "
-                                                  << publish_frequency
-                                                  << " Hz");
+      RCLCPP_DEBUG_STREAM(
+          rclcpp::get_logger("minimal_publisher"),
+          "Frequency parameter is " << publish_frequency << " Hz");
 
       RCLCPP_INFO_STREAM(rclcpp::get_logger("minimal_publisher"),
                          "Publishing at " << publish_frequency << " Hz");
