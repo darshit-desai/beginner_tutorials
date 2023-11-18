@@ -55,8 +55,11 @@ Below is the screenshot of the rqt console logging levels:
 ![](results/Fatal_error.png)
 * Normal error test
 ![](results/Serv_Error.png)
+* Warning and debug test
+![](results/warn_debugmsg.png)
 * Service call terminal screenshot
 ![](results/ServiceCall.png)
+
 
 
 
