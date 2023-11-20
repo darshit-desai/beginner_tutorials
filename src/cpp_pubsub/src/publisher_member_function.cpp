@@ -24,6 +24,10 @@
 #include <std_msgs/msg/string.hpp>
 #include <string>
 
+#include <geometry_msgs/msg/transform_stamped.hpp>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_ros/static_transform_broadcaster.h>
+
 using namespace std::chrono_literals;
 
 /**
@@ -55,7 +59,7 @@ class MinimalPublisher : public rclcpp::Node {
       RCLCPP_INFO_STREAM(rclcpp::get_logger("minimal_publisher"),
                          "Publishing at " << publish_frequency << " Hz");
     }
-    publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
+    publisher_ = this->create_publisher<std_msgs::msg::String>("chatter", 10);
     timer_ = this->create_wall_timer(
         std::chrono::duration<double>(1.0 / publish_frequency),
         std::bind(&MinimalPublisher::timer_callback, this));
@@ -79,6 +83,7 @@ class MinimalPublisher : public rclcpp::Node {
     RCLCPP_INFO_STREAM(rclcpp::get_logger("minimal_publisher"),
                        "Publishing: " << message.data.c_str());
     publisher_->publish(message);
+    broadcast_tf();
   }
   /**
    * @brief A callback function that changes the output string
@@ -110,6 +115,21 @@ class MinimalPublisher : public rclcpp::Node {
    * @param data
    */
   void setData(const std::string& data) { base_output_string_ = data; }
+  /**
+   * @brief A function that broadcasts a transform
+   *
+   */
+  void broadcast_tf() {
+    static tf2_ros::StaticTransformBroadcaster broadcaster(this);
+    geometry_msgs::msg::TransformStamped transformStamped;
+    transformStamped.header.stamp = this->now();
+    transformStamped.header.frame_id = "world";
+    transformStamped.child_frame_id = "talk";
+    transformStamped.transform.translation.x =
+        1.0;  // Set your desired translation
+    transformStamped.transform.rotation.x = 0.0;  // Set your desired rotation
+    broadcaster.sendTransform(transformStamped);
+  }
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
   rclcpp::Service<cpp_pubsub::srv::ModOutput>::SharedPtr service_;

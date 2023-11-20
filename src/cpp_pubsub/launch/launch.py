@@ -6,7 +6,6 @@ from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
     args_Frequency = DeclareLaunchArgument('freq', default_value=TextSubstitution(text="600"))
-
     return LaunchDescription([
         args_Frequency,
         Node(
