@@ -12,10 +12,14 @@
  *
  */
 
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_ros/static_transform_broadcaster.h>
+
 #include <chrono>
 #include <cpp_pubsub/srv/mod_output.hpp>
 #include <cstdlib>
 #include <functional>
+#include <geometry_msgs/msg/transform_stamped.hpp>
 #include <memory>
 #include <rclcpp/executors.hpp>
 #include <rclcpp/logger.hpp>
@@ -23,10 +27,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/string.hpp>
 #include <string>
-
-#include <geometry_msgs/msg/transform_stamped.hpp>
-#include <tf2/LinearMath/Quaternion.h>
-#include <tf2_ros/static_transform_broadcaster.h>
 
 using namespace std::chrono_literals;
 
@@ -98,6 +98,8 @@ class MinimalPublisher : public rclcpp::Node {
                        "received request with data " << request->new_output);
     setData(request->new_output);
     response->set__success(true);
+    RCLCPP_INFO_STREAM(rclcpp::get_logger("minimal_publisher"),
+                       "String updated to: " << base_output_string_);
     RCLCPP_INFO_STREAM_ONCE(rclcpp::get_logger("minimal_publisher"),
                             "finished processing request");
   }

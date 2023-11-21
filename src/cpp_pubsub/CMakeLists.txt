@@ -16,7 +16,6 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
-find_package(turtlesim REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
@@ -35,6 +34,10 @@ ament_target_dependencies(listener rclcpp std_msgs)
 rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
 target_link_libraries(talker "${cpp_typesupport_target}")
 target_link_libraries(listener "${cpp_typesupport_target}")
+
+
+
+
 
 install(TARGETS
   talker
@@ -66,6 +69,7 @@ if(BUILD_TESTING)
     test/integration_test.cpp)
   ament_add_gtest(${PROJECT_NAME}_test ${TESTFILES})
   ament_target_dependencies(${PROJECT_NAME}_test ${THIS_PACKAGE_INCLUDE_DEPENDS})
+  rosidl_target_interfaces(${PROJECT_NAME}_test ${PROJECT_NAME} "rosidl_typesupport_cpp")
 endif()
 
 ament_export_dependencies(rosidl_default_runtime)

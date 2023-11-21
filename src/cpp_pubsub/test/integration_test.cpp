@@ -12,7 +12,8 @@
 #include <gtest/gtest.h>
 #include <stdlib.h>
 
-// #include <cpp_pubsub/srv/mod_output.hpp>
+#include <cpp_pubsub/srv/mod_output.hpp>
+#include <rclcpp/executor.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/string.hpp>
 
@@ -59,7 +60,7 @@ class TaskPlanningFixture : public testing::Test {
                << "/" << node_name << " > /dev/null 2> /dev/null";
     char execName[16];
     // snprintf(execName, 16, "%s",
-            //  exec_name);  // pkill uses exec name <= 15 char only
+    //  exec_name);  // pkill uses exec name <= 15 char only
     snprintf(execName, sizeof(execName), "%s", exec_name);
     killCmd_ss << "pkill --signal SIGINT " << execName
                << " > /dev/null 2> /dev/null";
@@ -123,27 +124,60 @@ TEST_F(TaskPlanningFixture, TrueIsTrueTest) {
   EXPECT_TRUE(hasData);
 }
 
-// Write at least one test case that is evaluated with the standard gtest
-// ASSERT_* macros.
-// TEST_F(TaskPlanningFixture, Assert_check_test) {
-//   // @TODO : Write a test case that uses the ASSERT_* macros
-//   // Example: Call the service to change the output string
-//   auto client =
-//       node_->create_client<cpp_pubsub::srv::ModOutput>("change_output_server");
-//   ASSERT_TRUE(client->wait_for_service(std::chrono::seconds(1)));
+TEST_F(TaskPlanningFixture, Assert_check_test) {
+  // @TODO : Write a test case that uses the ASSERT_* macros
+  // Example: Call the service to change the output string
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(node_);
 
-//   auto request = std::make_shared<cpp_pubsub::srv::ModOutput::Request>();
-//   request->new_output = "NewOutputString";
+  // Subscribe to the chatter topic
+  using std_msgs::msg::String;
+  using SUBSCRIBER = rclcpp::Subscription<String>::SharedPtr;
+  SUBSCRIBER subscription;  // Declare the subscription outside the block
 
-//   auto result_future = client->async_send_request(request);
-//   if (rclcpp::spin_until_future_complete(node_, result_future) ==
-//       rclcpp::executor::FutureReturnCode::SUCCESS) {
-//     auto result = result_future.get();
-//     ASSERT_TRUE(result->success);
-//   } else {
-//     FAIL() << "Service call failed";
-//   }
-// }
+  // Call the service to change the output string
+  auto client =
+      node_->create_client<cpp_pubsub::srv::ModOutput>("change_output_server");
+  ASSERT_TRUE(client->wait_for_service(std::chrono::seconds(1)));
+
+  auto request = std::make_shared<cpp_pubsub::srv::ModOutput::Request>();
+  request->new_output = "NewOutputString";
+
+  auto result_future = client->async_send_request(request);
+  RCLCPP_INFO(node_->get_logger(),
+              "Calling service to change output string...");
+
+  if (executor.spin_until_future_complete(result_future) ==
+      rclcpp::FutureReturnCode::SUCCESS) {
+    auto result = result_future.get();
+    ASSERT_TRUE(result->success);
+
+    // Subscribe to the chatter topic inside the if block
+    subscription = node_->create_subscription<String>(
+        "chatter", 10,
+        // Lambda expression begins
+        [&](const std_msgs::msg::String& msg) {
+          RCLCPP_INFO(node_->get_logger(), "Received message: '%s'",
+                      msg.data.c_str());
+        });
+
+    // Allow the subscription callback to execute for a certain duration
+    const auto start_time = std::chrono::steady_clock::now();
+    const auto timeout_duration = std::chrono::seconds(5);
+
+    while (std::chrono::steady_clock::now() - start_time < timeout_duration) {
+      executor.spin_once(std::chrono::milliseconds(100));
+      std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    RCLCPP_INFO(node_->get_logger(),
+                "Finished waiting for subscription callback");
+  } else {
+    FAIL() << "Service call failed";
+  }
+}
+
+// ...
 
 int main(int argc, char** argv) {
   rclcpp::init(argc, argv);
