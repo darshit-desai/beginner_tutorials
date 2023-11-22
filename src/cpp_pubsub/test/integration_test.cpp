@@ -20,7 +20,7 @@
 #include <std_msgs/msg/string.hpp>
 /**
  * @brief Class for testing the cpp_pubsub package
- * 
+ *
  */
 class TaskPlanningFixture : public testing::Test {
  public:
@@ -29,7 +29,7 @@ class TaskPlanningFixture : public testing::Test {
   }
   /**
    * @brief Destroy the Task Planning Fixture object
-   * 
+   *
    */
   void SetUp() override {
     // Setup things that should occur before every test instance should go here
@@ -46,7 +46,7 @@ class TaskPlanningFixture : public testing::Test {
   }
   /**
    * @brief Destroy the Task Planning Fixture object
-   * 
+   *
    */
   void TearDown() override {
     // Tear things that should occur after every test instance should go here
@@ -63,12 +63,12 @@ class TaskPlanningFixture : public testing::Test {
   std::stringstream cmd_ss, cmdInfo_ss, killCmd_ss;
   /**
    * @brief Method to start the ros2 node
-   * 
-   * @param pkg_name 
-   * @param node_name 
-   * @param exec_name 
-   * @return true 
-   * @return false 
+   *
+   * @param pkg_name
+   * @param node_name
+   * @param exec_name
+   * @return true
+   * @return false
    */
   bool StartROSExec(const char* pkg_name, const char* node_name,
                     const char* exec_name) {
@@ -100,9 +100,9 @@ class TaskPlanningFixture : public testing::Test {
   }
   /**
    * @brief Method to stop the running ros2 node
-   * 
-   * @return true 
-   * @return false 
+   *
+   * @return true
+   * @return false
    */
   bool StopROSExec() {
     if (killCmd_ss.str().empty()) return true;
@@ -112,10 +112,9 @@ class TaskPlanningFixture : public testing::Test {
   }
 };
 
-
 /**
  * @brief Test case to check if the node is running
- * 
+ *
  */
 TEST_F(TaskPlanningFixture, TrueIsTrueTest) {
   std::cout << "TEST BEGINNING!!" << std::endl;
@@ -153,8 +152,9 @@ TEST_F(TaskPlanningFixture, TrueIsTrueTest) {
   EXPECT_TRUE(hasData);
 }
 /**
- * @brief Test case to check if the node is running and the service call is working
- * 
+ * @brief Test case to check if the node is running and the service call is
+ * working
+ *
  */
 TEST_F(TaskPlanningFixture, Assert_check_test) {
   // @TODO : Write a test case that uses the ASSERT_* macros
