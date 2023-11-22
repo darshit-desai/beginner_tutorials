@@ -50,6 +50,8 @@ ros2 launch cpp_pubsub rosbag_launch.py freq:=1.0 record_rosbag:=True #Note if r
 # Once done recording to view the bag info or play the rosbag
 ros2 bag play rosbag2_2023_11_20-14_59_06 #For playing the rosbag
 ros2 bag info rosbag2_2023_11_20-14_53_00/ #For info of the bag file
+# While playing the bag file in terminal#2 run the listener node
+ros2 run beginner_tutorials listener
 # For running the ros test
 colcon build --packages-select cpp_pubsub # Build the package
 source install/setup.bash # Source the package
