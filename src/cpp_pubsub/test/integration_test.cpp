@@ -5,7 +5,9 @@
  * @version 0.1
  * @date 2023-11-19
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2023 Darshit Desai
+ * This code is licensed under the Apache 2.0 License. Please see the
+ * accompanying LICENSE file for the full text of the license.
  *
  */
 
@@ -16,13 +18,19 @@
 #include <rclcpp/executor.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/string.hpp>
-
+/**
+ * @brief Class for testing the cpp_pubsub package
+ * 
+ */
 class TaskPlanningFixture : public testing::Test {
  public:
   TaskPlanningFixture() : node_(std::make_shared<rclcpp::Node>("basic_test")) {
     RCLCPP_INFO_STREAM(node_->get_logger(), "DONE WITH CONSTRUCTOR!!");
   }
-
+  /**
+   * @brief Destroy the Task Planning Fixture object
+   * 
+   */
   void SetUp() override {
     // Setup things that should occur before every test instance should go here
 
@@ -36,7 +44,10 @@ class TaskPlanningFixture : public testing::Test {
 
     RCLCPP_INFO_STREAM(node_->get_logger(), "DONE WITH SETUP!!");
   }
-
+  /**
+   * @brief Destroy the Task Planning Fixture object
+   * 
+   */
   void TearDown() override {
     // Tear things that should occur after every test instance should go here
 
@@ -50,7 +61,15 @@ class TaskPlanningFixture : public testing::Test {
  protected:
   rclcpp::Node::SharedPtr node_;
   std::stringstream cmd_ss, cmdInfo_ss, killCmd_ss;
-
+  /**
+   * @brief Method to start the ros2 node
+   * 
+   * @param pkg_name 
+   * @param node_name 
+   * @param exec_name 
+   * @return true 
+   * @return false 
+   */
   bool StartROSExec(const char* pkg_name, const char* node_name,
                     const char* exec_name) {
     // build command strings
@@ -79,7 +98,12 @@ class TaskPlanningFixture : public testing::Test {
     }
     return true;
   }
-
+  /**
+   * @brief Method to stop the running ros2 node
+   * 
+   * @return true 
+   * @return false 
+   */
   bool StopROSExec() {
     if (killCmd_ss.str().empty()) return true;
 
@@ -88,6 +112,11 @@ class TaskPlanningFixture : public testing::Test {
   }
 };
 
+
+/**
+ * @brief Test case to check if the node is running
+ * 
+ */
 TEST_F(TaskPlanningFixture, TrueIsTrueTest) {
   std::cout << "TEST BEGINNING!!" << std::endl;
   EXPECT_TRUE(true);
@@ -123,7 +152,10 @@ TEST_F(TaskPlanningFixture, TrueIsTrueTest) {
   }
   EXPECT_TRUE(hasData);
 }
-
+/**
+ * @brief Test case to check if the node is running and the service call is working
+ * 
+ */
 TEST_F(TaskPlanningFixture, Assert_check_test) {
   // @TODO : Write a test case that uses the ASSERT_* macros
   // Example: Call the service to change the output string
@@ -176,8 +208,6 @@ TEST_F(TaskPlanningFixture, Assert_check_test) {
     FAIL() << "Service call failed";
   }
 }
-
-// ...
 
 int main(int argc, char** argv) {
   rclcpp::init(argc, argv);
