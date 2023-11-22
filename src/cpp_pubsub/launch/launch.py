@@ -5,16 +5,16 @@ from launch.substitutions import TextSubstitution
 from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
-    args_Frequency = DeclareLaunchArgument('freq', default_value = TextSubstitution(text="600"))
-    
+    args_Frequency = DeclareLaunchArgument('freq', default_value=TextSubstitution(text="600"))
     return LaunchDescription([
         args_Frequency,
         Node(
             package='cpp_pubsub',
             executable='talker',
             parameters=[
-                {"freq" : LaunchConfiguration('freq')}
-            ]
+                {"freq": LaunchConfiguration('freq')}
+            ],
+            arguments=['--ros-args', '--log-level', 'DEBUG']
         ),
         Node(
             package='cpp_pubsub',
