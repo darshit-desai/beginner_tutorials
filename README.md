@@ -38,7 +38,7 @@ ros2 launch cpp_pubsub launch.py freq:=0.5 #Freq needs to be double datatype
 # Service call run with launch file in Terminal 2 (Split the terminal and source ROS2 and the workspace setup.bash)
 ros2 service call /change_output_server cpp_pubsub/srv/ModOutput "{new_output: Hi I'm Darshit calling the service}"
 
-
+#####FOR ASSIGNMENT#3 RUN THE FOLLOWING AFTER BUILDING THE NODE######
 # Run command for checking the tf Publishing topic
 # Run the publisher in terminal#1
 ros2 run beginner_tutorials talker
